@@ -42,23 +42,25 @@ If the upper management of Clonation Motors calculates the CPV index (customer p
 CPV = total profit \* [(Price rank\*Safety rank) + (Quality rank\*Luxury rank)]
 
 Find the production mix, by formulating (and solving) a mixed-integer programing model, that allows Clonation Motors to maximize the CPV index.Value: 100 points.
-| **UNORISTAN** |            |            |            |            |            |            |            |            |            |            |
-|---------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|
+
+### Table 1: Unoristan
+
 | **Car type**  | **Size**   | **Selling price** | **Variable cost** | **Fixed cost** | **Price** | **Quality** | **Safety** | **Luxury** | **Assembly time (max 8000 hr)** | **Raw material (max 10000 tons)** |
+|---------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|
 | Getta         | midsize/ family size | 20k | 7k | 3k | 3 | 3 | 1 | 3 | 4 | 5 |
 | Borax         | family size | 27k | 9k | 4k | 2 | 1 | 3 | 2 | 5 | 5 |
 | Tointer       | compact size/mid size | 15k | 6k | 1k | 2 | 3 | 2 | 2 | 2 | 2 |
 | Ferby         | compact size | 15k | 9k | 2k | 1 | 3 | 3 | 1 | 2 | 1 |
 | Pupo          | compact size/mid size | 10k | 6k | 1.5k | 3 | 3 | 3 | 3 | 1 | 2 |
 | Molo          | midsize | 18k | 11k | 1k | 3 | 1 | 2 | 3 | 3 | 3 |
-|
-**DOSOVO**    |            |            |            |            |            |            |            |            |            |            |
+
+### Table 2: Dosovo
+
 | **Car type**  | **Size**   | **Selling price** | **Variable cost** | **Fixed cost** | **Price** | **Quality** | **Safety** | **Luxury** | **Assembly time (max 7000 hr)** | **Raw material (max 12000)** |
+|---------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|------------|
 | Getta         | midsize/ family size | 27 | 6 | 3 | 3 | 1 | 3 | 3 | 5 | 2 |
 | Borax         | family size | 18 | 9 | 1 | 1 | 3 | 2 | 2 | 2 | 3 |
 | Tointer       | compact size/mid size | 12 | 11 | 4 | 3 | 2 | 2 | 2 | 1 | 5 |
 | Ferby         | compact size | 20 | 6 | 2 | 3 | 3 | 1 | 1 | 5 | 2 |
 | Pupo          | compact size/mid size | 15 | 9 | 1 | 3 | 3 | 3 | 3 | 3 | 1 |
 | Molo          | midsize | 15 | 7 | 1.5 | 1 | 2 | 3 | 3 | 2 | 4 |
-
-Table 1. Clonation Motors operative conditions.
