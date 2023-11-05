@@ -43,6 +43,14 @@ subject to binary_constraint_first {i in CARS, j in FACTORIES}:
 subject to binary_constraint_second {i in CARS, j in FACTORIES}:
     X[i, j] >= car_min_constr[i, j] * Y[i, j];
 
+# this makes Y 0 if X is 0
+subject to binary_constraint_third {i in CARS, j in FACTORIES}:
+    X[i, j] <= 1000000 * Y[i, j];
+
+
+
+# subject to binary_constraint_third {i in CARS, j in FACTORIES}:
+#     X[i, j] <= car_min_constr[i, j] * Y[i, j] + 1000000 * (1 - Y[i, j]);
 
 #CONSTRAINTS
 
@@ -58,10 +66,11 @@ subject to assembly_time_constraint {j in FACTORIES}:
 # UNORISTAN: Midsize/family size and family size cars share the same assembly line. 
 subject to uno_assembly_line_1:
     sum {i in CARS: size_desc[i] in {"midsize/family size", "midsize"}} X[i,"Unoristan"] 
-    <= sum {i in CARS: size_desc[i] in {"midsize/family size", "midsize"}} min(
-        assembly_constr["Unoristan"] / assembly_time[i,"Unoristan"], 
-        material_constr["Unoristan"] / raw_material[i,"Unoristan"]
-    ) * Y[i, "Unoristan"];
+    <= sum {i in CARS: size_desc[i] in {"midsize/family size", "midsize"}} 
+        min(
+            assembly_constr["Unoristan"] / assembly_time[i,"Unoristan"], 
+            material_constr["Unoristan"] / raw_material[i,"Unoristan"]
+        ) * Y[i, "Unoristan"];
 
 # UNORISTAN: All of the rest car sizes are manufactured on their own assembly line.
 subject to uno_assembly_line_2 :
@@ -126,4 +135,3 @@ subject to uno_if_midsizefamily_then_midsize:
 subject to dos_if_midsize_then_compact:
     sum {i in CARS: size_desc[i] == "midsize"} Y[i,"Dosovo"] 
     <= sum {i in CARS: size_desc[i] in {"compact size/midsize", "compact size"}} Y[i,"Dosovo"];
-
