@@ -1,0 +1,30 @@
+# option solver xpress;
+# option solver cplex;
+# option cplex_options 'display=2';
+model final_project.mod; 
+data final_project.dat;
+printf "======================================================\n\t\t\tObjective\n======================================================\n";
+
+solve;
+
+printf "======================================================\n\t\t\tVariables\n======================================================\n";
+
+# display {j in 1.._nvars} (_varname[j], _var[j], _var[j].rc);
+for {j in 1.._nvars} {
+    printf "%s      \tValue: %.0f\tReduced cost: %.6f\n",_varname[j], _var[j], _var[j].rc;
+}
+printf "======================================================\n\t\t   Active constraints\n======================================================\n";
+
+# param eps := 1e-6;
+for {i in 1.._ncons} {
+    # if (-eps <= _con[i].lslack <= eps) or (-eps <= _con[i].uslack <= eps) then
+        if length(_conname[i]) <= 22 then
+            printf "%s\t\t\t\tUslack: %.6f\tLslack: %.6f\tL.H.S.: %.6f\n", _conname[i], _con[i].uslack, _con[i].uslack, _con[i].body;
+        else if 22 < length(_conname[i]) <= 30 then
+            printf "%s\t\t\tUslack: %.6f\tLslack: %.6f\tL.H.S.: %.6f\n", _conname[i], _con[i].uslack, _con[i].uslack, _con[i].body;
+        else if 30 < length(_conname[i]) <= 37 then
+            printf "%s\t\tUslack: %.6f\tLslack: %.6f\tL.H.S.: %.6f\n", _conname[i], _con[i].uslack, _con[i].uslack, _con[i].body;
+        else
+            printf "%s\tUslack: %.6f\tLslack: %.6f\tL.H.S.: %.6f\n", _conname[i], _con[i].uslack, _con[i].uslack, _con[i].body;
+}
+reset;
