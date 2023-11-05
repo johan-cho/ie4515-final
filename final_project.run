@@ -1,3 +1,7 @@
+#####################################
+# Run this file to solve the model.
+#####################################
+
 # option solver xpress;
 # option solver cplex;
 # option cplex_options 'display=2';

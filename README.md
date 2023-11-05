@@ -1,19 +1,21 @@
 # IE4515 Operations Research Final Project
 
-The final project is to solve a mixed integer optimization problem using AMPL, LINDO or other solvers.
+Our final project in this class tasked us to solve a mixed integer optimization problem. I chose AMPL, and wrote it largely by myself.
 
 You could view the problem statement [here](https://drive.google.com/file/d/1CnO5QGbpaexRrt9mTwnDpIXqMVac_0eY/view?usp=sharing_), or read below.
 
 ## FINAL PROJECT
 
-Clonation Motors manufactures 6 different types of cars (classified according to their size) in two different manufacturing sites:Unoristan and Dosovo.Clonation motors has the following operative conditions (see Table 1 below):
+Clonation Motors manufactures 6 different types of cars (classified according to their size) in two different manufacturing sites: Unoristan and Dosovo.
+
+Clonation motors has the following operative conditions (see Table 1 below):
 
 - selling price and variable costs are in USD.
 - cars are manufactured on different assembly lines, which are leased to a provider in the USA (the monthly lease is in USD).
 - assembly time is in hours and the raw material is in steel tons.
-- each type of cars has been classified into four criteria - price, quality, safety, luxury – and the evaluation scale used is 1, 2, or 3 (where 1 means “total poorness”, and 3 means “total excellence”).
+- each type of cars has been classified into four criteria - price, quality, safety, luxury – and the evaluation scale used is 1, 2, or 3 (where 1 means "total poorness", and 3 means "total excellence").
 
-On the other hand, Clonation Motors faces the following technical challenges.Fort he case of Unoristan:
+On the other hand, Clonation Motors faces the following technical challenges. For the case of Unoristan:
 
 - Midsize/family size and family size cars share the same assembly line.All of the rest car sizes are manufactured on their own assembly line.
 - Produce at least three different types of cars.
@@ -27,7 +29,7 @@ On the other hand, Clonation Motors faces the following technical challenges.For
 
 Whereas for Dosovo:
 
-- Tointers and Ferbys share the same assembly line, Pupos and Molos share the same assembly line.All of the rest car types are manufactured on their own assembly line.
+- Tointers and Ferbys share the same assembly line, Pupos and Molos share the same assembly line. All of the rest car types are manufactured on their own assembly line.
 - Produce at least four different types of cars.
 - At least one car type produced at must be considered compact size/midsize or midsize.
 - If a midsize car is produced a, then a compact size/mid size or compact size must be produced.
@@ -37,11 +39,11 @@ Whereas for Dosovo:
 - Produce at least 300 (or none at all) Ferbys.
 - Produce at least 750 (or none at all) Molos.
 
-If the upper management of Clonation Motors calculates the CPV index (customer perceived value) of a produced car, as follows:
+If the upper management of Clonation Motors calculates the `CPV` index (customer perceived value) of a produced car, as follows:
 
-CPV = total profit \* [(Price rank\*Safety rank) + (Quality rank\*Luxury rank)]
+`CPV = total_profit * [(price_rank * safety_rank) + (quality_rank * luxury_rank)]`
 
-Find the production mix, by formulating (and solving) a mixed-integer programing model, that allows Clonation Motors to maximize the CPV index.Value: 100 points.
+Find the production mix, by formulating (and solving) a mixed-integer programing model, that allows Clonation Motors to maximize the `CPV` index.
 
 ### Table 1: Unoristan
 
