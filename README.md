@@ -1,6 +1,8 @@
 # IE4515 Operations Research Final Project
 
-Our final project in this class tasked us to solve a mixed integer optimization problem. I chose AMPL, and wrote it largely by myself.
+Our final project in this class tasked us to solve a mixed integer optimization problem. I thought it was gonna be a creative project where I go out and create my own problem to solve, but this was a bit of a curveball.
+
+I chose AMPL, and wrote it largely by myself. Interestingly, my professor didn't know how to program, at all, so I was a little bit in the dark with this kind of stuff; it was a lot of self-learning. I used the [AMPL VS Code](https://marketplace.visualstudio.com/items?itemName=michael-sundvick.ampl) extension so I didn't have to use the AMPL IDE.
 
 You could view the problem statement [here](https://drive.google.com/file/d/1CnO5QGbpaexRrt9mTwnDpIXqMVac_0eY/view?usp=sharing_), or read below.
 
@@ -24,7 +26,7 @@ On the other hand, Clonation Motors faces the following technical challenges. Fo
 - The total ranking of the different types of cars to be produced, regarding safety, must be at least 9.
 - Produce at least 300 (or none at all) Boraxes.
 - Produce at least 1000 (or none at all) Ferbys.
-- Produce at least 900 (or none at all) of Pupos.
+- Produce at least 900 (or none at all) Pupos.
 - Produce at least 750 (or none at all) Molos.
 
 Whereas for Dosovo:

@@ -45,12 +45,10 @@ subject to binary_constraint_second {i in CARS, j in FACTORIES}:
 
 # this makes Y 0 if X is 0
 subject to binary_constraint_third {i in CARS, j in FACTORIES}:
-    X[i, j] <= 1000000 * Y[i, j];
-
-
-
-# subject to binary_constraint_third {i in CARS, j in FACTORIES}:
-#     X[i, j] <= car_min_constr[i, j] * Y[i, j] + 1000000 * (1 - Y[i, j]);
+    X[i, j] <= min(
+            assembly_constr[j] / assembly_time[i,j], 
+            material_constr[j] / raw_material[i,j]
+        )* Y[i, j];
 
 #CONSTRAINTS
 
