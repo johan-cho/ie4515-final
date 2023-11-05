@@ -4,6 +4,8 @@ Our final project in this class tasked us to solve a mixed integer optimization 
 
 I chose AMPL, and wrote it largely by myself. Interestingly, my professor didn't know how to program, at all, so I was a little bit in the dark with this kind of stuff; it was a lot of self-learning. I used the [AMPL VS Code](https://marketplace.visualstudio.com/items?itemName=michael-sundvick.ampl) extension so I didn't have to use the AMPL IDE.
 
+Currently, my solution is `CPV = 680711.5`.
+
 You could view the problem statement [here](https://drive.google.com/file/d/1CnO5QGbpaexRrt9mTwnDpIXqMVac_0eY/view?usp=sharing_), or read below.
 
 ## FINAL PROJECT
