@@ -3,14 +3,13 @@
 #####################################
 
 # option solver xpress;
-# option solver cplex;
+option solver cplex;
 # option cplex_options 'display=2';
 model final_project.mod; 
 data final_project.dat;
 printf "======================================================\n\t\t\tObjective\n======================================================\n";
-
 solve;
-
+expand;
 printf "======================================================\n\t\t\tVariables\n======================================================\n";
 
 # display {j in 1.._nvars} (_varname[j], _var[j], _var[j].rc);
