@@ -144,8 +144,8 @@ param car_min_constr: Unoristan Dosovo:=
     Gretta 0 900
     Borax 300 0
     Tointer 0 600
-    Ferby 1000 0
-    Pupo 900 300
+    Ferby 1000 300
+    Pupo 900 0
     Molo 750 750;
 
 # minimum safety ranking, binary variable * safety ranking

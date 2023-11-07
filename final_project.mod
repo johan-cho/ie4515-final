@@ -36,6 +36,13 @@ maximize CPV:
 
 #BINARY CONSTRAINTS
 # this is the same as saying that if X[i,j] is 0, then Y[i,j] must be 0
+# subject to binary_constraint_first {i in CARS, j in FACTORIES}:
+#     Y[i, j] <= X[i, j];
+
+# subject to set_y {i in CARS, j in FACTORIES}:
+#     Y[i, j] = (if X[i, j] <= 0 then 0 else 1);
+# subject to set_y {X <= 0}: Y = 0;
+
 subject to binary_constraint_first {i in CARS, j in FACTORIES}:
     Y[i, j] <= X[i, j];
 
