@@ -4,7 +4,7 @@ Our final project in this class tasked us to solve a mixed integer optimization 
 
 I chose AMPL, and wrote it largely by myself. Interestingly, my professor didn't know how to program, at all, so I was a little bit in the dark with this kind of stuff; it was a lot of self-learning. I used the [AMPL VS Code](https://marketplace.visualstudio.com/items?itemName=michael-sundvick.ampl) extension so I didn't have to use the AMPL IDE.
 
-Currently, my solution is `CPV = 693671.5`.
+Currently, my solution is `CPV = 543094.5`.
 
 You could view the problem statement [here](https://drive.google.com/file/d/1CnO5QGbpaexRrt9mTwnDpIXqMVac_0eY/view?usp=sharing_), or read below.
 
@@ -21,7 +21,7 @@ Clonation motors has the following operative conditions (see Table 1 below):
 
 On the other hand, Clonation Motors faces the following technical challenges. For the case of Unoristan:
 
-- Midsize/family size and family size cars share the same assembly line.All of the rest car sizes are manufactured on their own assembly line.
+- Midsize/family size and family size cars share the same assembly line. All of the rest car sizes are manufactured on their own assembly line.
 - Produce at least three different types of cars.
 - At least one car type produced at must be considered compact size or compact size/mid size.
 - If a midsize/family size car is produced, then a mid size car must be produced.

@@ -15,6 +15,8 @@ param luxury {i in CARS, j in FACTORIES} >= 0;
 param assembly_time {i in CARS, j in FACTORIES} >= 0;
 param raw_material {i in CARS, j in FACTORIES} >= 0;
 param size_desc {i in CARS} symbolic;
+param assembly_line_mapper {i in CARS, j in FACTORIES} symbolic;
+param assembly_line_mapper_reversed {i in CARS, j in FACTORIES} symbolic;
 
 #CONSTRAINT PARAMETERS
 
@@ -24,40 +26,22 @@ param material_constr {j in FACTORIES} >= 0;
 param car_min_constr {i in CARS, j in FACTORIES} >= 0;
 param safety_total_min_constr {j in FACTORIES} >= 0;
 
+param M{i in CARS, j in FACTORIES} := 
+    min(
+        assembly_constr[j] / assembly_time[i,j], 
+        material_constr[j] / raw_material[i,j]
+    );
+
 #VARIABLES
 var X {i in CARS, j in FACTORIES} integer >= 0;
-var Y {i in CARS, j in FACTORIES} binary;
+var Y {i in CARS, j in FACTORIES} binary >= 0;
 
 #OBJECTIVE FUNCTION
 maximize CPV: 
     sum {i in CARS, j in FACTORIES} (
-            (selling_price[i,j] - variable_cost[i,j]) * X[i,j]  - (fixed_cost[i,j] * Y[i,j])
-        ) * (price[i,j] * safety[i,j] + quality[i,j] * luxury[i,j]);
+        (selling_price[i,j] - variable_cost[i,j]) * X[i,j]  - (fixed_cost[i,j] * Y[i,j])
+    ) * (price[i,j] * safety[i,j] + quality[i,j] * luxury[i,j]);
 
-#BINARY CONSTRAINTS
-# this is the same as saying that if X[i,j] is 0, then Y[i,j] must be 0
-# subject to binary_constraint_first {i in CARS, j in FACTORIES}:
-#     Y[i, j] <= X[i, j];
-
-# subject to set_y {i in CARS, j in FACTORIES}:
-#     Y[i, j] = (if X[i, j] <= 0 then 0 else 1);
-# subject to set_y {X <= 0}: Y = 0;
-
-subject to binary_constraint_first {i in CARS, j in FACTORIES}:
-    Y[i, j] <= X[i, j];
-
-# this makes it so that if the number of cars is less than the minimum, then the number of cars and Y[i,j] must be 0
-subject to binary_constraint_second {i in CARS, j in FACTORIES}:
-    X[i, j] >= car_min_constr[i, j] * Y[i, j];
-
-# this makes Y 0 if X is 0
-subject to binary_constraint_third {i in CARS, j in FACTORIES}:
-    X[i, j] <= min(
-            assembly_constr[j] / assembly_time[i,j], 
-            material_constr[j] / raw_material[i,j]
-        )* Y[i, j];
-
-#CONSTRAINTS
 
 # raw material constraint
 subject to raw_material_constraint {j in FACTORIES}:
@@ -67,51 +51,34 @@ subject to raw_material_constraint {j in FACTORIES}:
 subject to assembly_time_constraint {j in FACTORIES}:
     sum {i in CARS} assembly_time[i,j] * X[i,j] <= assembly_constr[j];
 
+# EQUALITY CONSTRAINTS: force binary variables to be the same, workaround for sharing assembly lines
+subject to assembly_line_equality{i in CARS, j in FACTORIES: assembly_line_mapper[i,j] != ""}:
+    Y[i,j] = Y[assembly_line_mapper[i,j], j];
 
-# UNORISTAN: Midsize/family size and family size cars share the same assembly line. 
-subject to uno_assembly_line_1:
-    sum {i in CARS: size_desc[i] in {"midsize/family size", "midsize"}} X[i,"Unoristan"] 
-    <= sum {i in CARS: size_desc[i] in {"midsize/family size", "midsize"}} 
-        min(
-            assembly_constr["Unoristan"] / assembly_time[i,"Unoristan"], 
-            material_constr["Unoristan"] / raw_material[i,"Unoristan"]
-        ) * Y[i, "Unoristan"];
+# ASSEMBLY LINE CONSTRAINTS
 
-# UNORISTAN: All of the rest car sizes are manufactured on their own assembly line.
-subject to uno_assembly_line_2 :
-    sum {i in CARS: size_desc[i] not in {"midsize/family size", "midsize"}} X[i,"Unoristan"] 
-    <= sum {i in CARS: size_desc[i] not in {"midsize/family size", "midsize"}} 
-        min(
-            assembly_constr["Unoristan"] / assembly_time[i,"Unoristan"], 
-            material_constr["Unoristan"] / raw_material[i,"Unoristan"]
-        ) * Y[i, "Unoristan"];
+# this is X <= M * Y
+subject to assembly_lines_1{i in CARS, j in FACTORIES}:
+    X[i,j] <= M[i,j] * Y[i,j];
 
-# DOSOVO: Tointers and Ferbys share the same assembly line
-subject to dos_assembly_line_1:
-    sum {i in CARS: i in {"Tointer", "Ferby"}} X[i,"Dosovo"] 
-    <= sum {i in CARS: i in {"Tointer", "Ferby"}} 
-        min(
-            assembly_constr["Dosovo"] / assembly_time[i,"Dosovo"], 
-            material_constr["Dosovo"] / raw_material[i,"Dosovo"]
-        ) * Y[i, "Dosovo"];
+# this is MIN - X <= M * (1 - Y)
+subject to assembly_lines_2{i in CARS, j in FACTORIES}:
+    car_min_constr[i,j] - X[i,j] <= M[i,j] * (1 - Y[i,j]);
 
-# DOSOVO: Pupos and Molos the same assembly line
-subject to dos_assembly_line_2:
-    sum {i in CARS: i in {"Pupo", "Molo"}} X[i,"Dosovo"]
-    <= sum {i in CARS: i in {"Pupo", "Molo"}} 
-        min(
-            assembly_constr["Dosovo"] / assembly_time[i,"Dosovo"], 
-            material_constr["Dosovo"] / raw_material[i,"Dosovo"]
-        ) * Y[i, "Dosovo"];
 
-# DOSOVO: All of the rest car types are manufactured on their own assembly line.
-subject to dos_assembly_line_3:
-    sum {i in CARS: i not in {"Tointer", "Ferby", "Pupo", "Molo"}} X[i,"Dosovo"] 
-    <= sum {i in CARS: i not in {"Tointer", "Ferby", "Pupo", "Molo"}} 
-        min(
-            assembly_constr["Dosovo"] / assembly_time[i, "Dosovo"], 
-            material_constr["Dosovo"] / raw_material[i, "Dosovo"]
-        ) * Y[i, "Dosovo"];
+# subject to test{i in CARS, j in FACTORIES}:
+#     Y[i,j] <= X[i, j];
+
+# # # this is X <= M * Y
+# subject to test_con_1{i in CARS, j in FACTORIES: assembly_line_mapper[i,j] != ""}:
+#     X[i,j] + X[assembly_line_mapper[i,j],j]  <= min(M[i,j], M[assembly_line_mapper[i,j],j]) * Y[i,j];
+
+# # this is MIN - X <= M * (1 - Y)
+# subject to test_con_2{i in CARS, j in FACTORIES: assembly_line_mapper[i,j] != ""}:
+#     car_min_constr[i,j] + car_min_constr[assembly_line_mapper[i,j],j] - X[i,j] - X[assembly_line_mapper[i,j],j] <= min(M[i,j], M[assembly_line_mapper[i,j],j]) * (1 - Y[i,j]);
+
+# subject to test_con_3{i in CARS, j in FACTORIES: assembly_line_mapper_reversed[i,j] != ""}:
+#     car_min_constr[i,j] + car_min_constr[assembly_line_mapper_reversed[i,j],j] - X[i,j] - X[assembly_line_mapper_reversed[i,j],j] <= min(M[i,j], M[assembly_line_mapper_reversed[i,j],j]) * (1 - Y[i,j]);
 
 # must produce at least x amount of cars for each factory
 subject to type_constraint {j in FACTORIES}:
@@ -119,7 +86,7 @@ subject to type_constraint {j in FACTORIES}:
 
 # total safety ranking of cars produced must be at least x for each factory
 subject to safety_constraint {j in FACTORIES}: 
-    sum {i in CARS} (safety[i,j] * Y[i,j]) >= safety_total_min_constr[j];
+    sum {i in CARS} safety[i,j] * Y[i,j] >= safety_total_min_constr[j];
 
 # UNORISTAN: at least one car produced must be midsize
 subject to uno_at_least_one_compact:
@@ -133,10 +100,10 @@ subject to dos_at_least_one_midsize:
 
 # UNORISTAN: if you produce a compact car, you must produce a midsize car
 subject to uno_if_midsizefamily_then_midsize:
-    sum {i in CARS: size_desc[i] == "midsize/family size"} Y[i,"Unoristan"] 
+    sum {i in CARS: size_desc[i] == "midsize/family size" } Y[i,"Unoristan"] 
     <= sum {i in CARS: size_desc[i] == "midsize"} Y[i,"Unoristan"];
 
 # DOSOVO: if you produce a midsize car, you must produce a compact car
 subject to dos_if_midsize_then_compact:
-    sum {i in CARS: size_desc[i] == "midsize"} Y[i,"Dosovo"] 
-    <= sum {i in CARS: size_desc[i] in {"compact size/midsize", "compact size"}} Y[i,"Dosovo"];
+    sum {i in CARS: size_desc[i] == "midsize" and assembly_line_mapper[i,"Dosovo"] == ""} Y[i,"Dosovo"] 
+    <= sum {i in CARS: size_desc[i] in {"compact size/midsize", "compact size"} and assembly_line_mapper[i,"Dosovo"] == ""} Y[i,"Dosovo"];
