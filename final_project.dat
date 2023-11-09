@@ -17,6 +17,23 @@ param size_desc:=
     Pupo "compact size/midsize"
     Molo "midsize";
 
+param assembly_line_mapper: Unoristan Dosovo:=
+    Gretta "Borax" ""
+    Borax "" ""
+    Tointer "Pupo" "Ferby"
+    Ferby "" ""
+    Pupo "" "Molo"
+    Molo "" "";
+
+param assembly_line_mapper_reversed: Unoristan Dosovo:=
+    Gretta "" ""
+    Borax "Gretta" ""
+    Tointer "" ""
+    Ferby "" "Tointer"
+    Pupo "Tointer" ""
+    Molo "" "Pupo";
+
+
 # selling price in $1000
 param selling_price: Unoristan Dosovo:=
     Gretta 20 27

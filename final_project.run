@@ -2,8 +2,8 @@
 # Run this file to solve the model.
 #####################################
 
-option solver xpress;
-# option solver cplex;
+# option solver xpress;
+option solver cplex;
 # option cplex_options 'display=2';
 model final_project.mod; 
 data final_project.dat;
@@ -12,6 +12,7 @@ expand;
 printf "======================================================\n\t\t\tObjective\n======================================================\n";
 solve;
 printf "======================================================\n\t\t\tVariables\n======================================================\n";
+
 
 # display {j in 1.._nvars} (_varname[j], _var[j], _var[j].rc);
 for {j in 1.._nvars} {
