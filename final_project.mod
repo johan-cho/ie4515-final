@@ -16,7 +16,7 @@ param assembly_time {i in CARS, j in FACTORIES} >= 0;
 param raw_material {i in CARS, j in FACTORIES} >= 0;
 param size_desc {i in CARS} symbolic;
 param assembly_line_mapper {i in CARS, j in FACTORIES} symbolic;
-param assembly_line_mapper_reversed {i in CARS, j in FACTORIES} symbolic;
+# param assembly_line_mapper_reversed {i in CARS, j in FACTORIES} symbolic;
 
 #CONSTRAINT PARAMETERS
 
@@ -33,7 +33,7 @@ param M{i in CARS, j in FACTORIES} :=
     );
 
 #VARIABLES
-var X {i in CARS, j in FACTORIES} integer >= 0;
+var X {i in CARS, j in FACTORIES}  >= 0;
 var Y {i in CARS, j in FACTORIES} binary >= 0;
 
 #OBJECTIVE FUNCTION
