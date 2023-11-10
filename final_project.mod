@@ -16,7 +16,7 @@ param assembly_time {i in CARS, j in FACTORIES} >= 0;
 param raw_material {i in CARS, j in FACTORIES} >= 0;
 param size_desc {i in CARS} symbolic;
 param assembly_line_mapper {i in CARS, j in FACTORIES} symbolic;
-# param assembly_line_mapper_reversed {i in CARS, j in FACTORIES} symbolic;
+param assembly_line_mapper_reversed {i in CARS, j in FACTORIES} symbolic;
 
 #CONSTRAINT PARAMETERS
 
@@ -33,7 +33,7 @@ param M{i in CARS, j in FACTORIES} :=
     );
 
 #VARIABLES
-var X {i in CARS, j in FACTORIES}  >= 0;
+var X {i in CARS, j in FACTORIES} >= 0;
 var Y {i in CARS, j in FACTORIES} binary >= 0;
 
 #OBJECTIVE FUNCTION
@@ -65,11 +65,11 @@ subject to assembly_lines_1{i in CARS, j in FACTORIES}:
 subject to assembly_lines_2{i in CARS, j in FACTORIES}:
     car_min_constr[i,j] - X[i,j] <= M[i,j] * (1 - Y[i,j]);
 
+# subject to assembly_lines_3{i in CARS, j in FACTORIES}:
+#     Y[i,j] <= X[i,j];
 
-# subject to test{i in CARS, j in FACTORIES}:
-#     Y[i,j] <= X[i, j];
 
-# # # this is X <= M * Y
+# # this is X <= M * Y
 # subject to test_con_1{i in CARS, j in FACTORIES: assembly_line_mapper[i,j] != ""}:
 #     X[i,j] + X[assembly_line_mapper[i,j],j]  <= min(M[i,j], M[assembly_line_mapper[i,j],j]) * Y[i,j];
 
@@ -100,10 +100,31 @@ subject to dos_at_least_one_midsize:
 
 # UNORISTAN: if you produce a compact car, you must produce a midsize car
 subject to uno_if_midsizefamily_then_midsize:
-    sum {i in CARS: size_desc[i] == "midsize/family size" } Y[i,"Unoristan"] 
-    <= sum {i in CARS: size_desc[i] == "midsize"} Y[i,"Unoristan"];
+    sum {i in CARS: 
+        size_desc[i] == "midsize/family size" 
+        # and assembly_line_mapper[i, "Unoristan"] == ""
+    } Y[i,"Unoristan"] 
+    <= sum {
+        i in CARS: 
+        size_desc[i] == "midsize" 
+        # and assembly_line_mapper[i, "Unoristan"] == ""
+    } Y[i,"Unoristan"];
 
 # DOSOVO: if you produce a midsize car, you must produce a compact car
 subject to dos_if_midsize_then_compact:
-    sum {i in CARS: size_desc[i] == "midsize" and assembly_line_mapper[i,"Dosovo"] == ""} Y[i,"Dosovo"] 
-    <= sum {i in CARS: size_desc[i] in {"compact size/midsize", "compact size"} and assembly_line_mapper[i,"Dosovo"] == ""} Y[i,"Dosovo"];
+    sum {
+        i in CARS: 
+        size_desc[i] in {"midsize"}
+        and assembly_line_mapper[i,"Dosovo"] == ""
+        # and (size_desc[assembly_line_mapper[i,"Dosovo"]] == "midsize")
+        # and assembly_line_mapper[i,"Dosovo"] != "Ferby"
+    } Y[i,"Dosovo"]
+    <= sum {
+        i in CARS: 
+        size_desc[i] in {"compact size/midsize", "compact size"} 
+        # and assembly_line_mapper[i,"Dosovo"] != "Ferby"
+        and assembly_line_mapper[i,"Dosovo"] == ""
+        # and assembly_line_mapper[i,"Dosovo"] != "Molo"
+        # and assembly_line_mapper[i,"Dosovo"] != "Ferby"
+    } Y[i,"Dosovo"];
+

@@ -25,13 +25,13 @@ param assembly_line_mapper: Unoristan Dosovo:=
     Pupo "" "Molo"
     Molo "" "";
 
-# param assembly_line_mapper_reversed: Unoristan Dosovo:=
-#     Gretta "" ""
-#     Borax "Gretta" ""
-#     Tointer "" ""
-#     Ferby "" "Tointer"
-#     Pupo "Tointer" ""
-#     Molo "" "Pupo";
+param assembly_line_mapper_reversed: Unoristan Dosovo:=
+    Gretta "" ""
+    Borax "Gretta" ""
+    Tointer "" ""
+    Ferby "" "Tointer"
+    Pupo "Tointer" ""
+    Molo "" "Pupo";
 
 
 # selling price in $1000

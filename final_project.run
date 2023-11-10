@@ -16,7 +16,7 @@ printf "======================================================\n\t\t\tVariables\
 
 # display {j in 1.._nvars} (_varname[j], _var[j], _var[j].rc);
 for {j in 1.._nvars} {
-    printf "%s      \tValue: %.0f\tReduced cost: %.6f\n",_varname[j], _var[j], _var[j].rc;
+    printf "%s      \tValue: %.2f\tReduced cost: %.6f\n",_varname[j], _var[j], _var[j].rc;
 }
 printf "======================================================\n\t\t   Active constraints\n======================================================\n";
 
