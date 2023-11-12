@@ -68,18 +68,6 @@ subject to assembly_lines_2{i in CARS, j in FACTORIES}:
 # subject to assembly_lines_3{i in CARS, j in FACTORIES}:
 #     Y[i,j] <= X[i,j];
 
-
-# # this is X <= M * Y
-# subject to test_con_1{i in CARS, j in FACTORIES: assembly_line_mapper[i,j] != ""}:
-#     X[i,j] + X[assembly_line_mapper[i,j],j]  <= min(M[i,j], M[assembly_line_mapper[i,j],j]) * Y[i,j];
-
-# # this is MIN - X <= M * (1 - Y)
-# subject to test_con_2{i in CARS, j in FACTORIES: assembly_line_mapper[i,j] != ""}:
-#     car_min_constr[i,j] + car_min_constr[assembly_line_mapper[i,j],j] - X[i,j] - X[assembly_line_mapper[i,j],j] <= min(M[i,j], M[assembly_line_mapper[i,j],j]) * (1 - Y[i,j]);
-
-# subject to test_con_3{i in CARS, j in FACTORIES: assembly_line_mapper_reversed[i,j] != ""}:
-#     car_min_constr[i,j] + car_min_constr[assembly_line_mapper_reversed[i,j],j] - X[i,j] - X[assembly_line_mapper_reversed[i,j],j] <= min(M[i,j], M[assembly_line_mapper_reversed[i,j],j]) * (1 - Y[i,j]);
-
 # must produce at least x amount of cars for each factory
 subject to type_constraint {j in FACTORIES}:
     sum {i in CARS} Y[i,j] >= type_constr[j];
@@ -100,24 +88,20 @@ subject to dos_at_least_one_midsize:
 
 # UNORISTAN: if you produce a compact car, you must produce a midsize car
 subject to uno_if_midsizefamily_then_midsize:
-    sum {i in CARS: 
-        size_desc[i] == "midsize/family size" 
-        # and assembly_line_mapper[i, "Unoristan"] == ""
-    } Y[i,"Unoristan"] 
-    <= sum {
-        i in CARS: 
-        size_desc[i] == "midsize" 
-        # and assembly_line_mapper[i, "Unoristan"] == ""
-    } Y[i,"Unoristan"];
+    sum {i in CARS: size_desc[i] == "midsize/family size"} 
+        Y[i,"Unoristan"] 
+    <= sum {i in CARS: size_desc[i] == "midsize"} 
+        Y[i,"Unoristan"];
 
 # DOSOVO: if you produce a midsize car, you must produce a compact car
 subject to dos_if_midsize_then_compact:
     sum {
         i in CARS: 
-        size_desc[i] in {"midsize"}
+        size_desc[i] == "midsize"
         and assembly_line_mapper[i,"Dosovo"] == ""
         # and (size_desc[assembly_line_mapper[i,"Dosovo"]] == "midsize")
         # and assembly_line_mapper[i,"Dosovo"] != "Ferby"
+        # and assembly_line_mapper[i,"Dosovo"] != "Tointer"
     } Y[i,"Dosovo"]
     <= sum {
         i in CARS: 
@@ -125,6 +109,5 @@ subject to dos_if_midsize_then_compact:
         # and assembly_line_mapper[i,"Dosovo"] != "Ferby"
         and assembly_line_mapper[i,"Dosovo"] == ""
         # and assembly_line_mapper[i,"Dosovo"] != "Molo"
-        # and assembly_line_mapper[i,"Dosovo"] != "Ferby"
+        # and assembly_line_mapper[i,"Dosovo"] != "Tointer"
     } Y[i,"Dosovo"];
-
