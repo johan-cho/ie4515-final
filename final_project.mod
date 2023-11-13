@@ -16,9 +16,9 @@ param assembly_time {i in CARS, j in FACTORIES} >= 0;
 param raw_material {i in CARS, j in FACTORIES} >= 0;
 param size_desc {i in CARS} symbolic;
 param assembly_line_mapper {i in CARS, j in FACTORIES} symbolic;
-param assembly_line_mapper_reversed {i in CARS, j in FACTORIES} symbolic;
+# param assembly_line_mapper_reversed {i in CARS, j in FACTORIES} symbolic;
 
-#CONSTRAINT PARAMETERS
+# CONSTRAINT PARAMETERS
 
 param type_constr {j in FACTORIES} >= 0;
 param assembly_constr {j in FACTORIES} >= 0;
@@ -26,22 +26,23 @@ param material_constr {j in FACTORIES} >= 0;
 param car_min_constr {i in CARS, j in FACTORIES} >= 0;
 param safety_total_min_constr {j in FACTORIES} >= 0;
 
-param M{i in CARS, j in FACTORIES} := 
-    min(
-        assembly_constr[j] / assembly_time[i,j], 
-        material_constr[j] / raw_material[i,j]
-    );
+param M{i in CARS, j in FACTORIES}:= min(
+    assembly_constr[j] / assembly_time[i,j], 
+    material_constr[j] / raw_material[i,j]
+);
 
-#VARIABLES
+# VARIABLES
 var X {i in CARS, j in FACTORIES} >= 0;
 var Y {i in CARS, j in FACTORIES} binary >= 0;
 
-#OBJECTIVE FUNCTION
+# OBJECTIVE FUNCTION
 maximize CPV: 
     sum {i in CARS, j in FACTORIES} (
         (selling_price[i,j] - variable_cost[i,j]) * X[i,j]  - (fixed_cost[i,j] * Y[i,j])
     ) * (price[i,j] * safety[i,j] + quality[i,j] * luxury[i,j]);
 
+
+# CONSTRAINTS    
 
 # raw material constraint
 subject to raw_material_constraint {j in FACTORIES}:
@@ -65,9 +66,6 @@ subject to assembly_lines_1{i in CARS, j in FACTORIES}:
 subject to assembly_lines_2{i in CARS, j in FACTORIES}:
     car_min_constr[i,j] - X[i,j] <= M[i,j] * (1 - Y[i,j]);
 
-# subject to assembly_lines_3{i in CARS, j in FACTORIES}:
-#     Y[i,j] <= X[i,j];
-
 # must produce at least x amount of cars for each factory
 subject to type_constraint {j in FACTORIES}:
     sum {i in CARS} Y[i,j] >= type_constr[j];
@@ -83,31 +81,24 @@ subject to uno_at_least_one_compact:
 
 # DOSOVO: at least one car produced must be midsize
 subject to dos_at_least_one_midsize:
-    sum {i in CARS: size_desc[i] in {"compact size/midsize", "midsize"}}
+    sum {i in CARS: size_desc[i] in {"compact size/midsize", "midsize"}} 
         Y[i,"Dosovo"] >= 1;
 
 # UNORISTAN: if you produce a compact car, you must produce a midsize car
 subject to uno_if_midsizefamily_then_midsize:
     sum {i in CARS: size_desc[i] == "midsize/family size"} 
         Y[i,"Unoristan"] 
-    <= sum {i in CARS: size_desc[i] == "midsize"} 
+    <= sum {i in CARS: size_desc[i] == "midsize"}
         Y[i,"Unoristan"];
 
 # DOSOVO: if you produce a midsize car, you must produce a compact car
 subject to dos_if_midsize_then_compact:
-    sum {
-        i in CARS: 
-        size_desc[i] == "midsize"
-        and assembly_line_mapper[i,"Dosovo"] == ""
-        # and (size_desc[assembly_line_mapper[i,"Dosovo"]] == "midsize")
-        # and assembly_line_mapper[i,"Dosovo"] != "Ferby"
-        # and assembly_line_mapper[i,"Dosovo"] != "Tointer"
-    } Y[i,"Dosovo"]
-    <= sum {
-        i in CARS: 
-        size_desc[i] in {"compact size/midsize", "compact size"} 
-        # and assembly_line_mapper[i,"Dosovo"] != "Ferby"
-        and assembly_line_mapper[i,"Dosovo"] == ""
-        # and assembly_line_mapper[i,"Dosovo"] != "Molo"
-        # and assembly_line_mapper[i,"Dosovo"] != "Tointer"
-    } Y[i,"Dosovo"];
+    sum {i in CARS: size_desc[i] == "midsize"} 
+        Y[i,"Dosovo"] <= sum 
+        {
+            i in CARS: 
+            size_desc[i] in {"compact size/midsize", "compact size"} 
+            and assembly_line_mapper[i,"Dosovo"] not in {
+                _ in CARS: size_desc[_] == "midsize"
+            }
+        } Y[i,"Dosovo"];

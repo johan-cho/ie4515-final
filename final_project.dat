@@ -3,14 +3,14 @@
 #####################################
 
 # SETS
-set CARS:= Gretta Borax Tointer Ferby Pupo Molo;
+set CARS:= Getta Borax Tointer Ferby Pupo Molo;
 set FACTORIES:= Unoristan Dosovo;
 
 # PARAMS
 
 # size description for symbolic parameters
 param size_desc:=
-    Gretta "midsize/family size"
+    Getta "midsize/family size"
     Borax "family size"
     Tointer "compact size/midsize"
     Ferby "compact size"
@@ -18,7 +18,7 @@ param size_desc:=
     Molo "midsize";
 
 param assembly_line_mapper: Unoristan Dosovo:=
-    Gretta "Borax" ""
+    Getta "Borax" ""
     Borax "" ""
     Tointer "Pupo" "Ferby"
     Ferby "" ""
@@ -26,8 +26,8 @@ param assembly_line_mapper: Unoristan Dosovo:=
     Molo "" "";
 
 # param assembly_line_mapper_reversed: Unoristan Dosovo:=
-#     Gretta "" ""
-#     Borax "Gretta" ""
+#     Getta "" ""
+#     Borax "Getta" ""
 #     Tointer "" ""
 #     Ferby "" "Tointer"
 #     Pupo "Tointer" ""
@@ -36,7 +36,7 @@ param assembly_line_mapper: Unoristan Dosovo:=
 
 # selling price in $1000
 param selling_price: Unoristan Dosovo:=
-    Gretta 20 27
+    Getta 20 27
     Borax 27 18
     Tointer 15 12
     Ferby 15 20
@@ -45,7 +45,7 @@ param selling_price: Unoristan Dosovo:=
 
 # variable cost in $1000
 param variable_cost: Unoristan Dosovo:=
-    Gretta 7 6
+    Getta 7 6
     Borax 9 9
     Tointer 6 11
     Ferby 9 6
@@ -54,7 +54,7 @@ param variable_cost: Unoristan Dosovo:=
 
 # fixed cost in $1000, binary variable * fixed cost in objective function
 param fixed_cost: Unoristan Dosovo:=
-    Gretta 3 3
+    Getta 3 3
     Borax 4 1
     Tointer 1 4
     Ferby 2 2
@@ -62,7 +62,7 @@ param fixed_cost: Unoristan Dosovo:=
     Molo 1 1.5;
 
 # param selling_price: Unoristan Dosovo:=
-#     Gretta 20000 27000
+#     Getta 20000 27000
 #     Borax 27000 18000
 #     Tointer 15000 12000
 #     Ferby 15000 20000
@@ -70,7 +70,7 @@ param fixed_cost: Unoristan Dosovo:=
 #     Molo 18000 15000;
 
 # param variable_cost: Unoristan Dosovo:=
-#     Gretta 7000 6000
+#     Getta 7000 6000
 #     Borax 9000 9000
 #     Tointer 6000 11000
 #     Ferby 9000 6000
@@ -78,7 +78,7 @@ param fixed_cost: Unoristan Dosovo:=
 #     Molo 11000 7000;
 
 # param fixed_cost: Unoristan Dosovo:=
-#     Gretta 3000 3000
+#     Getta 3000 3000
 #     Borax 4000 1000
 #     Tointer 1000 4000
 #     Ferby 2000 2000
@@ -87,7 +87,7 @@ param fixed_cost: Unoristan Dosovo:=
 
 # price ranking
 param price: Unoristan Dosovo:=
-    Gretta 3 3
+    Getta 3 3
     Borax 2 1
     Tointer 2 3
     Ferby 1 3
@@ -96,7 +96,7 @@ param price: Unoristan Dosovo:=
 
 # quality ranking
 param quality: Unoristan Dosovo:=
-    Gretta 3 1
+    Getta 3 1
     Borax 1 3
     Tointer 3 2
     Ferby 3 3
@@ -105,7 +105,7 @@ param quality: Unoristan Dosovo:=
 
 # safety ranking
 param safety: Unoristan Dosovo:=
-    Gretta 1 3
+    Getta 1 3
     Borax 3 2
     Tointer 2 2
     Ferby 3 1
@@ -114,7 +114,7 @@ param safety: Unoristan Dosovo:=
 
 # luxury ranking
 param luxury: Unoristan Dosovo:=
-    Gretta 3 3
+    Getta 3 3
     Borax 2 2
     Tointer 2 2
     Ferby 1 1
@@ -123,7 +123,7 @@ param luxury: Unoristan Dosovo:=
 
 # assembly time in hours
 param assembly_time: Unoristan Dosovo:=
-    Gretta 4 5
+    Getta 4 5
     Borax 5 2
     Tointer 2 1
     Ferby 2 5
@@ -132,7 +132,7 @@ param assembly_time: Unoristan Dosovo:=
 
 # material cost in tons
 param raw_material: Unoristan Dosovo:=
-    Gretta 5 2
+    Getta 5 2
     Borax 5 3
     Tointer 2 5
     Ferby 1 2
@@ -158,7 +158,7 @@ param material_constr:=
 
 # minimum number of cars to produce, or 0 if not produced
 param car_min_constr: Unoristan Dosovo:=
-    Gretta 0 900
+    Getta 0 900
     Borax 300 0
     Tointer 0 600
     Ferby 1000 300
