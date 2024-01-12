@@ -1,5 +1,11 @@
 # IE4515 Operations Research Final Project
 
+## FOR FUTURE STUDENTS:
+
+I have no idea what he's changed about this project. If you send him this code, he'll know where you got it from. This is a *guide* to the right answer and you should make your own code.
+
+## Intro
+
 Our final project in this class tasked us to solve a mixed integer optimization problem. I thought it was gonna be a creative project where I go out and create my own problem to solve, but this was a bit of a curveball.
 
 I chose AMPL, and wrote it largely by myself. Interestingly, my professor didn't know how to program, at all, so I was a little bit in the dark with this kind of stuff; it was a lot of self-learning. I used the [AMPL VS Code](https://marketplace.visualstudio.com/items?itemName=michael-sundvick.ampl) extension so I didn't have to use the AMPL IDE.
